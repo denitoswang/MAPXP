@@ -114,12 +114,15 @@ function renderNodes() {
   nodes.forEach((node) => {
     const nodeButton = document.createElement('button');
     nodeButton.setAttribute('type', 'button');
-    nodeButton.className = `node-button group absolute flex items-center gap-3 rounded-full border px-3 py-2 text-left text-xs shadow-lg shadow-slate-950/20 transition ${node.type === 'main' ? 'border-cyan-400/20 bg-slate-900/80' : 'border-amber-400/20 bg-slate-950/80'} ${node.status === 'locked' ? 'locked' : ''} ${node.status === 'completed' ? 'completed bg-emerald-950/80 border-emerald-400/30' : ''}`;
+    const baseClasses = node.type === 'main' ? 'border-cyan-400/20 bg-slate-900/80' : 'border-amber-400/20 bg-slate-950/80';
+    const statusClasses = node.status === 'locked' ? 'locked' : node.status === 'completed' ? 'completed' : 'unlocked';
+    nodeButton.className = `node-button group absolute flex items-center gap-3 rounded-full border px-3 py-2 text-left text-xs shadow-lg shadow-slate-950/20 transition ${baseClasses} ${statusClasses}`;
     nodeButton.style.left = node.x;
     nodeButton.style.top = node.y;
     nodeButton.style.transform = 'translate(-50%, -50%)';
     nodeButton.dataset.id = node.id;
     nodeButton.innerHTML = `
+      <span class="node-pulse"></span>
       <span class="node-dot ${node.type === 'main' ? 'bg-cyan-400' : 'bg-amber-400'}"></span>
       <span class="font-semibold text-slate-100">${node.title}</span>
     `;
